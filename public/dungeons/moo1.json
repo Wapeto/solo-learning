@@ -1,530 +1,619 @@
 {
-  "id": "moo1",
-  "title": "Modélisation Orientée Objet I",
-  "description": "UML, OOP concepts, Inheritance, Design Patterns. Based on MOD1 TDs and January 2024 exam.",
-  "rank": "B",
-  "floors": [
-    {
-      "title": "UML Class Notation",
-      "mobs": [
+    "id": "moo1",
+    "title": "Modélisation Orientée Objet I",
+    "description": "UML, OOP concepts, Inheritance, Design Patterns, Types & Coupling. Based on MOD1 TDs, CMs, and January 2024 exam.",
+    "rank": "B",
+    "floors": [
         {
-          "concept": "Class Diagram Structure",
-          "lore": "A UML class is a blueprint. Three compartments. Name, attributes, operations. Learn to read them or die on the first floor.",
-          "questions": [
-            {
-              "prompt": "A UML class rectangle is divided into how many compartments?",
-              "choices": [
-                "2 — name and attributes",
-                "3 — name, attributes, and operations",
-                "4 — name, attributes, operations, and constructors",
-                "1 — just the class name"
-              ],
-              "answer": 1,
-              "explanation": "Three compartments: the top holds the class name, the middle holds attributes, and the bottom holds operations (methods). Constructors go in the operations compartment."
-            },
-            {
-              "prompt": "What does the '-' visibility symbol mean in a UML class diagram?",
-              "choices": [
-                "Public — accessible from anywhere",
-                "Private — only accessible from within the class itself",
-                "Protected — accessible from the class and its subclasses",
-                "Package — accessible within the same package"
-              ],
-              "answer": 1,
-              "explanation": "'-' means private. Only elements located within the container class can see the attribute or operation. No external access, even from subclasses."
-            },
-            {
-              "prompt": "What does the '+' visibility symbol mean in a UML class diagram?",
-              "choices": [
-                "Protected — accessible from subclasses",
-                "Static — shared across all instances",
-                "Public — any element that can see the class can see this member",
-                "Abstract — must be overridden"
-              ],
-              "answer": 2,
-              "explanation": "'+' means public. Any element that can see the container class can also see the indicated member. No restriction on access."
-            }
-          ]
+            "title": "UML Class Notation",
+            "mobs": [
+                {
+                    "concept": "Class Diagram Structure",
+                    "lore": "A UML class is a blueprint. Three compartments. Name, attributes, operations. Learn to read them or die on the first floor.",
+                    "questions": [
+                        {
+                            "prompt": "A UML class rectangle is divided into how many compartments?",
+                            "choices": [
+                                "2 — name and attributes",
+                                "3 — name, attributes, and operations",
+                                "4 — name, attributes, operations, and constructors",
+                                "1 — just the class name"
+                            ],
+                            "answer": 1,
+                            "explanation": "Three compartments: the top holds the class name, the middle holds attributes, and the bottom holds operations (methods). Constructors go in the operations compartment."
+                        },
+                        {
+                            "prompt": "What does the '-' visibility symbol mean in a UML class diagram?",
+                            "choices": [
+                                "Public — accessible from anywhere",
+                                "Private — only accessible from within the class itself",
+                                "Protected — accessible from the class and its subclasses",
+                                "Package — accessible within the same package"
+                            ],
+                            "answer": 1,
+                            "explanation": "'-' means private. Only elements located within the container class can see the attribute or operation. No external access, even from subclasses."
+                        },
+                        {
+                            "prompt": "What does the '+' visibility symbol mean in a UML class diagram?",
+                            "choices": [
+                                "Protected — accessible from subclasses",
+                                "Static — shared across all instances",
+                                "Public — any element that can see the class can see this member",
+                                "Abstract — must be overridden"
+                            ],
+                            "answer": 2,
+                            "explanation": "'+' means public. Any element that can see the container class can also see the indicated member. No restriction on access."
+                        }
+                    ]
+                },
+                {
+                    "concept": "Static Attributes & Protected Visibility",
+                    "lore": "Not all attributes are equal. Some belong to the instance. Some belong to the class. The difference matters.",
+                    "questions": [
+                        {
+                            "prompt": "How is a class attribute (static) graphically represented in a UML class diagram?",
+                            "choices": [
+                                "With the '#' symbol prefix",
+                                "In bold text",
+                                "Underlined",
+                                "With the keyword 'static' next to its name"
+                            ],
+                            "answer": 2,
+                            "explanation": "Static (class-level) attributes are underlined in UML. They hold a single value shared by all instances of the class, unlike instance attributes which are unique per object."
+                        },
+                        {
+                            "prompt": "What does the '#' visibility symbol mean in a UML class diagram?",
+                            "choices": [
+                                "Public — accessible from anywhere",
+                                "Private — only within the class",
+                                "Package — within the same package only",
+                                "Protected — accessible from the class and all its descendants"
+                            ],
+                            "answer": 3,
+                            "explanation": "'#' means protected. Only elements within the class itself, or within any subclass of it, can access this member. External code is blocked."
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "concept": "Static Attributes & Protected Visibility",
-          "lore": "Not all attributes are equal. Some belong to the instance. Some belong to the class. The difference matters.",
-          "questions": [
-            {
-              "prompt": "How is a class attribute (static) graphically represented in a UML class diagram?",
-              "choices": [
-                "With the '#' symbol prefix",
-                "In bold text",
-                "Underlined",
-                "With the keyword 'static' next to its name"
-              ],
-              "answer": 2,
-              "explanation": "Static (class-level) attributes are underlined in UML. They hold a single value shared by all instances of the class, unlike instance attributes which are unique per object."
-            },
-            {
-              "prompt": "What does the '#' visibility symbol mean in a UML class diagram?",
-              "choices": [
-                "Public — accessible from anywhere",
-                "Private — only within the class",
-                "Package — within the same package only",
-                "Protected — accessible from the class and all its descendants"
-              ],
-              "answer": 3,
-              "explanation": "'#' means protected. Only elements within the class itself, or within any subclass of it, can access this member. External code is blocked."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Associations & Relationships",
-      "mobs": [
-        {
-          "concept": "Cardinalities",
-          "lore": "Associations without cardinalities are lies. Know how many objects participate in each link.",
-          "questions": [
-            {
-              "prompt": "What does the cardinality '1..*' mean?",
-              "choices": [
-                "Exactly one",
-                "Zero or more (unbounded)",
-                "At least one, with no upper bound",
-                "From one to ten"
-              ],
-              "answer": 2,
-              "explanation": "'1..*' means one or more — at least one object must participate in the association, but there is no upper limit. Zero is not allowed."
-            },
-            {
-              "prompt": "What does the cardinality '0..1' mean?",
-              "choices": [
-                "Exactly zero",
-                "Zero or one — the association is optional, but cannot exceed one",
-                "One or more",
-                "Zero or more (unbounded)"
-              ],
-              "answer": 1,
-              "explanation": "'0..1' is optional — the link may or may not exist. When it does exist, there is at most one. This is commonly used to model optional relationships."
-            },
-            {
-              "prompt": "What does the cardinality '*' mean when written alone?",
-              "choices": [
-                "Exactly one",
-                "At least one",
-                "Zero or more — any number including none",
-                "Undefined cardinality"
-              ],
-              "answer": 2,
-              "explanation": "'*' means zero or more. Any number of objects can participate in the association, including no objects at all. Equivalent to '0..*'."
-            }
-          ]
+            "title": "Associations & Relationships",
+            "mobs": [
+                {
+                    "concept": "Cardinalities",
+                    "lore": "Associations without cardinalities are lies. Know how many objects participate in each link.",
+                    "questions": [
+                        {
+                            "prompt": "What does the cardinality '1..*' mean?",
+                            "choices": [
+                                "Exactly one",
+                                "Zero or more (unbounded)",
+                                "At least one, with no upper bound",
+                                "From one to ten"
+                            ],
+                            "answer": 2,
+                            "explanation": "'1..*' means one or more — at least one object must participate in the association, but there is no upper limit. Zero is not allowed."
+                        },
+                        {
+                            "prompt": "What does the cardinality '0..1' mean?",
+                            "choices": [
+                                "Exactly zero",
+                                "Zero or one — the association is optional, but cannot exceed one",
+                                "One or more",
+                                "Zero or more (unbounded)"
+                            ],
+                            "answer": 1,
+                            "explanation": "'0..1' is optional — the link may or may not exist. When it does exist, there is at most one. This is commonly used to model optional relationships."
+                        },
+                        {
+                            "prompt": "What does the cardinality '*' mean when written alone?",
+                            "choices": [
+                                "Exactly one",
+                                "At least one",
+                                "Zero or more — any number including none",
+                                "Undefined cardinality"
+                            ],
+                            "answer": 2,
+                            "explanation": "'*' means zero or more. Any number of objects can participate in the association, including no objects at all. Equivalent to '0..*'."
+                        }
+                    ]
+                },
+                {
+                    "concept": "Aggregation & Composition",
+                    "lore": "Both are 'has-a' relationships. The difference is in the survival of the parts when the whole dies.",
+                    "questions": [
+                        {
+                            "prompt": "In a composition relationship, what happens to child objects when the parent is destroyed?",
+                            "choices": [
+                                "They survive and become independent objects",
+                                "They are transferred to another parent automatically",
+                                "They are also destroyed — their lifetime is bound to the parent",
+                                "Nothing changes — composition has no lifetime coupling"
+                            ],
+                            "answer": 2,
+                            "explanation": "Composition is strong ownership. The child's lifecycle is tied to the parent. If the parent is destroyed, the child is destroyed too. This contrasts with aggregation, where parts can exist independently."
+                        },
+                        {
+                            "prompt": "How is composition represented in a UML class diagram?",
+                            "choices": [
+                                "An open (hollow) diamond at the parent's end",
+                                "A filled (solid) diamond at the parent's end",
+                                "A plain navigability arrow",
+                                "A dashed arrow with a stereotype label"
+                            ],
+                            "answer": 1,
+                            "explanation": "Composition uses a filled (solid) black diamond at the 'whole' end. Aggregation uses a hollow (open) diamond. The diamond is always at the side of the owner, not the owned part."
+                        },
+                        {
+                            "prompt": "What is a reflexive association in UML?",
+                            "choices": [
+                                "An association between two different concrete classes",
+                                "A class associated with instances of its own class",
+                                "A form of multiple inheritance",
+                                "An association with fixed cardinality 1..1"
+                            ],
+                            "answer": 1,
+                            "explanation": "A reflexive association is when a class is related to itself. Classic example: an Employee who manages other Employees, or a TreeNode with children of the same type."
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "concept": "Aggregation & Composition",
-          "lore": "Both are 'has-a' relationships. The difference is in the survival of the parts when the whole dies.",
-          "questions": [
-            {
-              "prompt": "In a composition relationship, what happens to child objects when the parent is destroyed?",
-              "choices": [
-                "They survive and become independent objects",
-                "They are transferred to another parent automatically",
-                "They are also destroyed — their lifetime is bound to the parent",
-                "Nothing changes — composition has no lifetime coupling"
-              ],
-              "answer": 2,
-              "explanation": "Composition is strong ownership. The child's lifecycle is tied to the parent. If the parent is destroyed, the child is destroyed too. This contrasts with aggregation, where parts can exist independently."
-            },
-            {
-              "prompt": "How is composition represented in a UML class diagram?",
-              "choices": [
-                "An open (hollow) diamond at the parent's end",
-                "A filled (solid) diamond at the parent's end",
-                "A plain navigability arrow",
-                "A dashed arrow with a stereotype label"
-              ],
-              "answer": 1,
-              "explanation": "Composition uses a filled (solid) black diamond at the 'whole' end. Aggregation uses a hollow (open) diamond. The diamond is always at the side of the owner, not the owned part."
-            },
-            {
-              "prompt": "What is a reflexive association in UML?",
-              "choices": [
-                "An association between two different concrete classes",
-                "A class associated with instances of its own class",
-                "A form of multiple inheritance",
-                "An association with fixed cardinality 1..1"
-              ],
-              "answer": 1,
-              "explanation": "A reflexive association is when a class is related to itself. Classic example: an Employee who manages other Employees, or a TreeNode with children of the same type."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Inheritance & Polymorphism",
-      "mobs": [
-        {
-          "concept": "Inheritance Fundamentals",
-          "lore": "Inheritance: the most abused relationship in OOP. Know the rules before you inherit from everything.",
-          "questions": [
-            {
-              "prompt": "What is the main advantage offered by inheritance in OOP?",
-              "choices": [
-                "Faster execution time compared to composition",
-                "Greater code reuse — subclasses inherit attributes and operations without rewriting them",
-                "Less memory consumption per object",
-                "Simpler compilation pipeline"
-              ],
-              "answer": 1,
-              "explanation": "Inheritance promotes code reuse. A derived class inherits all non-private members of its base class without duplicating code. This is its primary design benefit."
-            },
-            {
-              "prompt": "The Liskov Substitution Principle (LSP) states that:",
-              "choices": [
-                "Derived classes can freely modify the base class interface",
-                "Methods of derived classes must always return values identical to the base class",
-                "Objects of a derived class must be substitutable for base class objects without breaking program correctness",
-                "Abstract classes cannot have concrete methods"
-              ],
-              "answer": 2,
-              "explanation": "LSP: if S is a subtype of T, then objects of type T can be replaced with objects of type S without altering program correctness. Violating LSP breaks the substitutability that makes polymorphism reliable."
-            },
-            {
-              "prompt": "In C++ multiple inheritance, what conflict can arise when two parent classes share a method name?",
-              "choices": [
-                "Memory cannot be allocated for the derived class",
-                "Ambiguity — the compiler cannot determine which parent's method to call without explicit resolution",
-                "The derived class automatically inherits neither method",
-                "Constructors become incompatible"
-              ],
-              "answer": 1,
-              "explanation": "When two parent classes both define a method with the same name, the derived class faces ambiguity. C++ requires explicit qualification (Parent1::method()) or an override in the derived class to resolve it."
-            }
-          ]
+            "title": "Inheritance & Polymorphism",
+            "mobs": [
+                {
+                    "concept": "Inheritance Fundamentals",
+                    "lore": "Inheritance: the most abused relationship in OOP. Know the rules before you inherit from everything.",
+                    "questions": [
+                        {
+                            "prompt": "What is the main advantage offered by inheritance in OOP?",
+                            "choices": [
+                                "Faster execution time compared to composition",
+                                "Greater code reuse — subclasses inherit attributes and operations without rewriting them",
+                                "Less memory consumption per object",
+                                "Simpler compilation pipeline"
+                            ],
+                            "answer": 1,
+                            "explanation": "Inheritance promotes code reuse. A derived class inherits all non-private members of its base class without duplicating code. This is its primary design benefit."
+                        },
+                        {
+                            "prompt": "The Liskov Substitution Principle (LSP) states that:",
+                            "choices": [
+                                "Derived classes can freely modify the base class interface",
+                                "Methods of derived classes must always return values identical to the base class",
+                                "Objects of a derived class must be substitutable for base class objects without breaking program correctness",
+                                "Abstract classes cannot have concrete methods"
+                            ],
+                            "answer": 2,
+                            "explanation": "LSP: if S is a subtype of T, then objects of type T can be replaced with objects of type S without altering program correctness. Violating LSP breaks the substitutability that makes polymorphism reliable."
+                        },
+                        {
+                            "prompt": "In C++ multiple inheritance, what conflict can arise when two parent classes share a method name?",
+                            "choices": [
+                                "Memory cannot be allocated for the derived class",
+                                "Ambiguity — the compiler cannot determine which parent's method to call without explicit resolution",
+                                "The derived class automatically inherits neither method",
+                                "Constructors become incompatible"
+                            ],
+                            "answer": 1,
+                            "explanation": "When two parent classes both define a method with the same name, the derived class faces ambiguity. C++ requires explicit qualification (Parent1::method()) or an override in the derived class to resolve it."
+                        }
+                    ]
+                },
+                {
+                    "concept": "Overriding vs Overloading",
+                    "lore": "Two concepts, one name collision. Don't confuse them on the exam or you lose HP and pride.",
+                    "questions": [
+                        {
+                            "prompt": "In class Cercle(Forme): dessiner(self) redefines Forme's method, and dessiner(self, couleur) adds a new signature. Which is overriding and which is overloading?",
+                            "choices": [
+                                "Both are examples of overriding (redéfinition)",
+                                "dessiner(self) is overloading; dessiner(self, couleur) is overriding",
+                                "dessiner(self) is overriding (redéfinition); dessiner(self, couleur) is overloading (surcharge)",
+                                "Neither is overriding nor overloading in this context"
+                            ],
+                            "answer": 2,
+                            "explanation": "Overriding (redéfinition): same signature, different body, in a subclass. Overloading (surcharge): same name, different parameters, in the same class. dessiner(self) overrides Forme's version; dessiner(self, couleur) is a new overloaded variant."
+                        },
+                        {
+                            "prompt": "Which of the following is a form of polymorphism in OOP?",
+                            "choices": [
+                                "The ability of a class to inherit from multiple parent classes",
+                                "The ability of a class to have several methods with the same name (overloading)",
+                                "The ability of a class to être instanciée",
+                                "The ability of a class to have multiple attributes"
+                            ],
+                            "answer": 1,
+                            "explanation": "Having multiple methods with the same name but different signatures (overloading) is ad-hoc polymorphism. Overriding (subtype polymorphism) is the other main form — one interface, different underlying behavior."
+                        },
+                        {
+                            "prompt": "By default, an association in UML is navigable in:",
+                            "choices": [
+                                "One direction only — from source class to target class",
+                                "Both directions — both ends know about each other",
+                                "Neither direction until explicitly specified",
+                                "The direction depends on the cardinality declared"
+                            ],
+                            "answer": 1,
+                            "explanation": "By default, UML associations are bidirectional. Both participating classes 'know' about each other. Navigability is restricted with an arrowhead when you explicitly want one-way access."
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "concept": "Overriding vs Overloading",
-          "lore": "Two concepts, one name collision. Don't confuse them on the exam or you lose HP and pride.",
-          "questions": [
-            {
-              "prompt": "In class Cercle(Forme): dessiner(self) redefines Forme's method, and dessiner(self, couleur) adds a new signature. Which is overriding and which is overloading?",
-              "choices": [
-                "Both are examples of overriding (redéfinition)",
-                "dessiner(self) is overloading; dessiner(self, couleur) is overriding",
-                "dessiner(self) is overriding (redéfinition); dessiner(self, couleur) is overloading (surcharge)",
-                "Neither is overriding nor overloading in this context"
-              ],
-              "answer": 2,
-              "explanation": "Overriding (redéfinition): same signature, different body, in a subclass. Overloading (surcharge): same name, different parameters, in the same class. dessiner(self) overrides Forme's version; dessiner(self, couleur) is a new overloaded variant."
-            },
-            {
-              "prompt": "Which of the following is a form of polymorphism in OOP?",
-              "choices": [
-                "The ability of a class to inherit from multiple parent classes",
-                "The ability of a class to have several methods with the same name (overloading)",
-                "The ability of a class to be instantiated",
-                "The ability of a class to have multiple attributes"
-              ],
-              "answer": 1,
-              "explanation": "Having multiple methods with the same name but different signatures (overloading) is ad-hoc polymorphism. Overriding (subtype polymorphism) is the other main form — one interface, different underlying behavior."
-            },
-            {
-              "prompt": "By default, an association in UML is navigable in:",
-              "choices": [
-                "One direction only — from source class to target class",
-                "Both directions — both ends know about each other",
-                "Neither direction until explicitly specified",
-                "The direction depends on the cardinality declared"
-              ],
-              "answer": 1,
-              "explanation": "By default, UML associations are bidirectional. Both participating classes 'know' about each other. Navigability is restricted with an arrowhead when you explicitly want one-way access."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Abstract Classes & Interfaces",
-      "mobs": [
-        {
-          "concept": "Abstract vs Interface",
-          "lore": "One can carry flesh. The other is pure contract. The exam will absolutely ask you to tell them apart.",
-          "questions": [
-            {
-              "prompt": "What is the main difference between an abstract class and an interface in Java?",
-              "choices": [
-                "An abstract class can have concrete methods; an interface can only have method signatures",
-                "An interface can be instantiated; an abstract class cannot",
-                "An abstract class cannot have attributes of any kind",
-                "There is no significant difference between the two"
-              ],
-              "answer": 0,
-              "explanation": "An abstract class mixes concrete and abstract methods, and can have fields. An interface (conceptually) is a pure contract — it only defines method signatures. Java 8+ added default methods to interfaces, but the distinction still holds in most exam contexts."
-            },
-            {
-              "prompt": "Can a Java class implement multiple interfaces?",
-              "choices": [
-                "No — Java prohibits all forms of multiple inheritance",
-                "Yes — a class can implement any number of interfaces",
-                "Only if the interfaces share no method names",
-                "Only if the implementing class is itself abstract"
-              ],
-              "answer": 1,
-              "explanation": "Java prohibits extending multiple classes (to avoid the diamond problem) but explicitly allows implementing multiple interfaces. This is the primary design justification for using interfaces over abstract classes when flexibility is needed."
-            },
-            {
-              "prompt": "What does an interface represent in OOP?",
-              "choices": [
-                "An abstract class with no concrete methods",
-                "A concrete implementation that can be instantiated",
-                "A collection of shared instance attributes",
-                "A specification of methods that implementing classes must provide"
-              ],
-              "answer": 3,
-              "explanation": "An interface is a pure contract. It specifies what methods a conforming class must implement, without dictating how. It defines the 'what', not the 'how'."
-            }
-          ]
+            "title": "Abstract Classes & Interfaces",
+            "mobs": [
+                {
+                    "concept": "Abstract vs Interface",
+                    "lore": "One can carry flesh. The other is pure contract. The exam will absolutely ask you to tell them apart.",
+                    "questions": [
+                        {
+                            "prompt": "What is the main difference between an abstract class and an interface in Java?",
+                            "choices": [
+                                "An abstract class can have concrete methods; an interface can only have method signatures",
+                                "An interface can be instantiated; an abstract class cannot",
+                                "An abstract class cannot have attributes of any kind",
+                                "There is no significant difference between the two"
+                            ],
+                            "answer": 0,
+                            "explanation": "An abstract class mixes concrete and abstract methods, and can have fields. An interface (conceptually) is a pure contract — it only defines method signatures. Java 8+ added default methods to interfaces, but the distinction still holds in most exam contexts."
+                        },
+                        {
+                            "prompt": "Can a Java class implement multiple interfaces?",
+                            "choices": [
+                                "No — Java prohibits all forms of multiple inheritance",
+                                "Yes — a class can implement any number of interfaces",
+                                "Only if the interfaces share no method names",
+                                "Only if the implementing class is itself abstract"
+                            ],
+                            "answer": 1,
+                            "explanation": "Java prohibits extending multiple classes (to avoid the diamond problem) but explicitly allows implementing multiple interfaces. This is the primary design justification for using interfaces over abstract classes when flexibility is needed."
+                        },
+                        {
+                            "prompt": "What does an interface represent in OOP?",
+                            "choices": [
+                                "An abstract class with no concrete methods",
+                                "A concrete implementation that can be instantiated",
+                                "A collection of shared instance attributes",
+                                "A specification of methods that implementing classes must provide"
+                            ],
+                            "answer": 3,
+                            "explanation": "An interface is a pure contract. It specifies what methods a conforming class must implement, without dictating how. It defines the 'what', not the 'how'."
+                        }
+                    ]
+                },
+                {
+                    "concept": "Encapsulation",
+                    "lore": "The gatekeeper concept. You control what goes in. You control what comes out.",
+                    "questions": [
+                        {
+                            "prompt": "What is encapsulation with information hiding?",
+                            "choices": [
+                                "Hiding the internal implementation of a class and providing a public interface to interact with it",
+                                "Using abstract classes to hide implementation from subclasses",
+                                "The ability to access private methods from outside the class via reflection",
+                                "Creating new classes from existing ones via inheritance"
+                            ],
+                            "answer": 0,
+                            "explanation": "Encapsulation bundles data and the methods that operate on it into a single unit, while hiding internal details. External code interacts only through the public interface — it cannot see or touch the internals."
+                        },
+                        {
+                            "prompt": "Which OOP concept groups data and the methods that act on it into a single unit?",
+                            "choices": [
+                                "Polymorphism",
+                                "Encapsulation",
+                                "Inheritance",
+                                "Abstraction"
+                            ],
+                            "answer": 1,
+                            "explanation": "Encapsulation. It binds attributes and behavior together in one class, and controls access to both through visibility modifiers (public, private, protected)."
+                        },
+                        {
+                            "prompt": "A 'Car' class requires that its 'registration number' attribute is unique per instance, set only once (by the constructor), and unmodifiable afterward. Which mechanism enforces this in Java/C++?",
+                            "choices": [
+                                "Making the attribute public and static",
+                                "Making the attribute final (or const) and private, with no setter, initialized only in the constructor",
+                                "Using an interface to declare the attribute",
+                                "Overloading the constructor"
+                            ],
+                            "answer": 1,
+                            "explanation": "Declare the attribute private (encapsulation) and final/const (immutability). The constructor sets it once. No setter is provided. A static counter can generate unique values. This is the exact pattern from TD1 Q2."
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "concept": "Encapsulation",
-          "lore": "The gatekeeper concept. You control what goes in. You control what comes out.",
-          "questions": [
-            {
-              "prompt": "What is encapsulation with information hiding?",
-              "choices": [
-                "Hiding the internal implementation of a class and providing a public interface to interact with it",
-                "Using abstract classes to hide implementation from subclasses",
-                "The ability to access private methods from outside the class via reflection",
-                "Creating new classes from existing ones via inheritance"
-              ],
-              "answer": 0,
-              "explanation": "Encapsulation bundles data and the methods that operate on it into a single unit, while hiding internal details. External code interacts only through the public interface — it cannot see or touch the internals."
-            },
-            {
-              "prompt": "Which OOP concept groups data and the methods that act on it into a single unit?",
-              "choices": [
-                "Polymorphism",
-                "Encapsulation",
-                "Inheritance",
-                "Abstraction"
-              ],
-              "answer": 1,
-              "explanation": "Encapsulation. It binds attributes and behavior together in one class, and controls access to both through visibility modifiers (public, private, protected)."
-            },
-            {
-              "prompt": "A 'Car' class requires that its 'registration number' attribute is unique per instance, set only once (by the constructor), and unmodifiable afterward. Which mechanism enforces this in Java/C++?",
-              "choices": [
-                "Making the attribute public and static",
-                "Making the attribute final (or const) and private, with no setter, initialized only in the constructor",
-                "Using an interface to declare the attribute",
-                "Overloading the constructor"
-              ],
-              "answer": 1,
-              "explanation": "Declare the attribute private (encapsulation) and final/const (immutability). The constructor sets it once. No setter is provided. A static counter can generate unique values. This is the exact pattern from TD1 Q2."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Design Patterns",
-      "mobs": [
-        {
-          "concept": "Singleton & Composite",
-          "lore": "Patterns are proven solutions to recurring problems. Know them by name. Know them by shape. Know why they exist.",
-          "questions": [
-            {
-              "prompt": "What is the main objective of the Singleton design pattern?",
-              "choices": [
-                "Manage a collection of related objects efficiently",
-                "Ensure a class has exactly one instance and provide a global access point to it",
-                "Define an interface for creating a family of related objects",
-                "Encapsulate a specific algorithm inside a class"
-              ],
-              "answer": 1,
-              "explanation": "Singleton guarantees one and only one instance of a class, accessible globally via getInstance(). Enforced by a private constructor. From TD1 Ex III: the Singleton class's private constructor + static instance field is the canonical implementation."
-            },
-            {
-              "prompt": "The Composite pattern allows you to:",
-              "choices": [
-                "Separate data from its processing operations",
-                "Design a recursive tree where leaves and internal nodes share the same interface",
-                "Ensure a single instance exists across the entire system",
-                "Create objects without specifying their concrete class"
-              ],
-              "answer": 1,
-              "explanation": "Composite creates a tree structure where individual leaf objects and composite (container) objects are treated uniformly through a shared interface. Classic uses: ASTs, file system hierarchies, UI component trees."
-            },
-            {
-              "prompt": "In the Singleton pattern from TD1, why must the constructor be private?",
-              "choices": [
-                "To prevent the class from being referenced anywhere else",
-                "To prevent external code from calling 'new' and creating multiple instances, which would violate the pattern",
-                "To automatically make all its methods static",
-                "To reduce memory usage at runtime"
-              ],
-              "answer": 1,
-              "explanation": "The private constructor is the enforcement mechanism. Without it, any class could call new Singleton() and create a second instance, breaking the single-instance guarantee entirely. getInstance() is the only legal entry point."
-            }
-          ]
+            "title": "Design Patterns",
+            "mobs": [
+                {
+                    "concept": "Singleton & Composite",
+                    "lore": "Patterns are proven solutions to recurring problems. Know them by name. Know them by shape. Know why they exist.",
+                    "questions": [
+                        {
+                            "prompt": "What is the main objective of the Singleton design pattern?",
+                            "choices": [
+                                "Manage a collection of related objects efficiently",
+                                "Ensure a class has exactly one instance and provide a global access point to it",
+                                "Define an interface for creating a family of related objects",
+                                "Encapsulate a specific algorithm inside a class"
+                            ],
+                            "answer": 1,
+                            "explanation": "Singleton guarantees one and only one instance of a class, accessible globally via getInstance(). Enforced by a private constructor. From TD1 Ex III: the Singleton class's private constructor + static instance field is the canonical implementation."
+                        },
+                        {
+                            "prompt": "The Composite pattern allows you to:",
+                            "choices": [
+                                "Separate data from its processing operations",
+                                "Design a recursive tree where leaves and internal nodes share the same interface",
+                                "Ensure a single instance exists across the entire system",
+                                "Create objects without specifying their concrete class"
+                            ],
+                            "answer": 1,
+                            "explanation": "Composite creates a tree structure where individual leaf objects and composite (container) objects are treated uniformly through a shared interface. Classic uses: ASTs, file system hierarchies, UI component trees."
+                        },
+                        {
+                            "prompt": "In the Singleton pattern from TD1, why must the constructor be private?",
+                            "choices": [
+                                "To prevent the class from being referenced anywhere else",
+                                "To prevent external code from calling 'new' and creating multiple instances, which would violate the pattern",
+                                "To automatically make all its methods static",
+                                "To reduce memory usage at runtime"
+                            ],
+                            "answer": 1,
+                            "explanation": "The private constructor is the enforcement mechanism. Without it, any class could call new Singleton() and create a second instance, breaking the single-instance guarantee entirely. getInstance() is the only legal entry point."
+                        }
+                    ]
+                },
+                {
+                    "concept": "Visitor Pattern",
+                    "lore": "When your tree is getting fat from method bloat. Let visitors handle the surgery.",
+                    "questions": [
+                        {
+                            "prompt": "The Visitor pattern was introduced to solve which core problem in the Composite/expression-tree design?",
+                            "choices": [
+                                "Memory leaks caused by recursive data structures",
+                                "Classes growing bloated as new operations (eval, count, toString...) are added, making maintenance harder",
+                                "Inheritance conflicts in multi-level hierarchies",
+                                "Performance degradation from deep object graphs"
+                            ],
+                            "answer": 1,
+                            "explanation": "Without Visitor, adding a new operation to an expression tree means adding a method to every node class (Binop, Constant, etc.). This bloats each class. Visitor separates operations into their own classes — adding an operation = adding one Visitor class, touching nothing else."
+                        },
+                        {
+                            "prompt": "What does the accept(Visitor v) method do in the Visitor pattern?",
+                            "choices": [
+                                "Creates and returns a new visitor initialized with the node's data",
+                                "Returns the computed result of the operation directly",
+                                "Calls the appropriate visit() method on the visitor, passing itself as argument (double dispatch)",
+                                "Iterates recursively over all children of the current node"
+                            ],
+                            "answer": 2,
+                            "explanation": "accept() is the dispatch mechanism. A node calls v.visit(this), which tells the visitor the exact concrete type it's dealing with. This enables double dispatch: both the node type and the visitor type determine which code runs."
+                        },
+                        {
+                            "prompt": "To support methods returning types other than integer (e.g., toString returning String), the Visitor interface should be adapted using:",
+                            "choices": [
+                                "A separate interface per return type, or generics: Visitor<T> with T visit(...)",
+                                "Additional parameters passed to each visit() method",
+                                "A global return variable stored as a class attribute",
+                                "Overloading each visit() method for each possible return type"
+                            ],
+                            "answer": 0,
+                            "explanation": "From TD2 Q9: to handle different return types cleanly, make the Visitor generic — Visitor<T> with T visit(Constant c) and T visit(Binop b). An EvalVisitor implements Visitor<Integer>, a PrintVisitor implements Visitor<String>, etc."
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "concept": "Visitor Pattern",
-          "lore": "When your tree is getting fat from method bloat. Let visitors handle the surgery.",
-          "questions": [
-            {
-              "prompt": "The Visitor pattern was introduced to solve which core problem in the Composite/expression-tree design?",
-              "choices": [
-                "Memory leaks caused by recursive data structures",
-                "Classes growing bloated as new operations (eval, count, toString...) are added, making maintenance harder",
-                "Inheritance conflicts in multi-level hierarchies",
-                "Performance degradation from deep object graphs"
-              ],
-              "answer": 1,
-              "explanation": "Without Visitor, adding a new operation to an expression tree means adding a method to every node class (Binop, Constant, etc.). This bloats each class. Visitor separates operations into their own classes — adding an operation = adding one Visitor class, touching nothing else."
-            },
-            {
-              "prompt": "What does the accept(Visitor v) method do in the Visitor pattern?",
-              "choices": [
-                "Creates and returns a new visitor initialized with the node's data",
-                "Returns the computed result of the operation directly",
-                "Calls the appropriate visit() method on the visitor, passing itself as argument (double dispatch)",
-                "Iterates recursively over all children of the current node"
-              ],
-              "answer": 2,
-              "explanation": "accept() is the dispatch mechanism. A node calls v.visit(this), which tells the visitor the exact concrete type it's dealing with. This enables double dispatch: both the node type and the visitor type determine which code runs."
-            },
-            {
-              "prompt": "To support methods returning types other than integer (e.g., toString returning String), the Visitor interface should be adapted using:",
-              "choices": [
-                "A separate interface per return type, or generics: Visitor<T> with T visit(...)",
-                "Additional parameters passed to each visit() method",
-                "A global return variable stored as a class attribute",
-                "Overloading each visit() method for each possible return type"
-              ],
-              "answer": 0,
-              "explanation": "From TD2 Q9: to handle different return types cleanly, make the Visitor generic — Visitor<T> with T visit(Constant c) and T visit(Binop b). An EvalVisitor implements Visitor<Integer>, a PrintVisitor implements Visitor<String>, etc."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "BOSS: Examen Janvier 2024",
-      "isBoss": true,
-      "mobs": [
+            "title": "Advanced Modeling, Types & Dynamics",
+            "mobs": [
+                {
+                    "concept": "Coupling & Dependencies",
+                    "lore": "To couple or not to couple. Tight coupling will destroy your maintainability.",
+                    "questions": [
+                        {
+                            "prompt": "How is a dependency relationship represented in UML?",
+                            "choices": [
+                                "A solid line with a filled diamond",
+                                "A dotted or dashed arrow",
+                                "A solid line with a hollow triangle",
+                                "A solid line with no arrows"
+                            ],
+                            "answer": 1,
+                            "explanation": "A dependency is a weak, temporary relationship represented by a dotted or dashed arrow. It indicates one class temporarily uses another."
+                        },
+                        {
+                            "prompt": "What is the definition of tight coupling?",
+                            "choices": [
+                                "Minimal dependency allowing independent changes",
+                                "A strong dependency where changes to one class require changes to dependent classes",
+                                "Two classes that share the same memory space",
+                                "Classes that implement the same interface"
+                            ],
+                            "answer": 1,
+                            "explanation": "Tight coupling means high interdependence. Examples include hard-coded values or direct access to internal members, making refactoring and maintenance much harder."
+                        }
+                    ]
+                },
+                {
+                    "concept": "Dynamic Modeling",
+                    "lore": "Static is dead. Dynamic is alive. Know how to represent time and user interactions.",
+                    "questions": [
+                        {
+                            "prompt": "What is the primary purpose of a Use Case Diagram?",
+                            "choices": [
+                                "To define the static structure of the system",
+                                "To model system functionality from a user's perspective",
+                                "To show the order of messages passed between objects",
+                                "To represent modular parts of a system"
+                            ],
+                            "answer": 1,
+                            "explanation": "Use Case Diagrams represent actors, use cases, and their interactions, focusing on functional requirements from an external view without implementation details."
+                        },
+                        {
+                            "prompt": "Which diagram should be used to show the flow of messages between objects?",
+                            "choices": [
+                                "Component Diagram",
+                                "Sequence Diagram",
+                                "Class Diagram",
+                                "Package Diagram"
+                            ],
+                            "answer": 1,
+                            "explanation": "Sequence diagrams model interactions and the specific order of messages between objects based on use cases."
+                        }
+                    ]
+                },
+                {
+                    "concept": "Types & Variance",
+                    "lore": "Know your types at compile time and runtime. Beware of collection invariance.",
+                    "questions": [
+                        {
+                            "prompt": "For the statement 'Shape s = new Rectangle();', what are the static and dynamic types?",
+                            "choices": [
+                                "Static: Rectangle, Dynamic: Shape",
+                                "Static: Shape, Dynamic: Rectangle",
+                                "Static and Dynamic are both Shape",
+                                "Static and Dynamic are both Rectangle"
+                            ],
+                            "answer": 1,
+                            "explanation": "The static type (Shape) is known at compile time. The dynamic/exact type (Rectangle) is generally known at runtime. The static type is a supertype compared to the dynamic type."
+                        },
+                        {
+                            "prompt": "In Java, what is the variance of a generic collection like List<T> with respect to its type parameters?",
+                            "choices": [
+                                "Covariant",
+                                "Contravariant",
+                                "Invariant",
+                                "Bivariant"
+                            ],
+                            "answer": 2,
+                            "explanation": "Generic collections in Java are invariant. Invariance means no substitution is allowed (e.g., a List<Dog> cannot be substituted for a List<Animal>)."
+                        }
+                    ]
+                }
+            ]
+        },
         {
-          "concept": "Examen Officiel — MOD 1 — Ghiles Ziat",
-          "lore": "The gate boss. These are the actual January 2024 exam questions. No paraphrasing. No hints. No mercy.",
-          "questions": [
-            {
-              "prompt": "[EXAM 2024] Lequel des concepts suivants est un avantage offert par l'héritage en programmation orientée objet ?",
-              "choices": [
-                "Un temps d'exécution plus rapide",
-                "Une plus grande réutilisation du code",
-                "Une consommation mémoire moins grande",
-                "Une compilation plus rapide"
-              ],
-              "answer": 1,
-              "explanation": "L'héritage favorise la réutilisation du code. Les classes dérivées héritent des attributs et méthodes sans réécriture. Les autres options sont des avantages qui ne découlent pas directement de l'héritage."
-            },
-            {
-              "prompt": "[EXAM 2024] Qu'est-ce que l'encapsulation avec masquage d'information ?",
-              "choices": [
-                "Le fait de cacher l'implémentation interne d'une classe et de fournir une interface publique",
-                "L'utilisation de classes abstraites pour masquer le code",
-                "La possibilité d'accéder à des méthodes privées depuis l'extérieur",
-                "La création de nouvelles classes à partir de classes existantes"
-              ],
-              "answer": 0,
-              "explanation": "L'encapsulation avec masquage cache l'implémentation interne et expose uniquement une interface publique. L'option D décrit l'héritage, pas l'encapsulation."
-            },
-            {
-              "prompt": "[EXAM 2024] Parmi les concepts suivants, lequel est une forme de polymorphisme en programmation orientée objet ?",
-              "choices": [
-                "La capacité d'une classe à hériter de plusieurs classes",
-                "La capacité d'une classe à avoir plusieurs méthodes portant le même nom",
-                "La capacité d'une classe à être instanciée",
-                "La capacité d'une classe à avoir des attributs multiples"
-              ],
-              "answer": 1,
-              "explanation": "La surcharge (overloading) — plusieurs méthodes avec le même nom mais des signatures différentes — est une forme de polymorphisme. L'option A décrit l'héritage multiple, pas le polymorphisme en lui-même."
-            },
-            {
-              "prompt": "[EXAM 2024] Quelle est la principale différence entre une classe abstraite et une interface en Java ?",
-              "choices": [
-                "Une classe abstraite peut avoir des méthodes concrètes, une interface ne peut avoir que des signatures de méthodes",
-                "Une interface peut être instanciée, une classe abstraite ne peut pas",
-                "Une classe abstraite ne peut pas avoir d'attributs",
-                "Il n'y a pas de différence significative entre les deux"
-              ],
-              "answer": 0,
-              "explanation": "La classe abstraite peut contenir des méthodes avec corps (concrètes) et des attributs. L'interface (conceptuellement) ne contient que des signatures — c'est un contrat pur. Java 8+ ajoute les méthodes 'default', mais la distinction reste valide pour cet examen."
-            },
-            {
-              "prompt": "[EXAM 2024] Quel concept de programmation orientée objet permet de regrouper les données et les méthodes qui agissent sur ces données dans une seule unité ?",
-              "choices": [
-                "Polymorphisme",
-                "Encapsulation",
-                "Héritage",
-                "Abstraction"
-              ],
-              "answer": 1,
-              "explanation": "L'encapsulation regroupe données (attributs) et comportements (méthodes) au sein d'une même entité — la classe — et contrôle l'accès via les modificateurs de visibilité."
-            },
-            {
-              "prompt": "[EXAM 2024] Que représente une interface ?",
-              "choices": [
-                "Une classe abstraite",
-                "Une implémentation concrète d'une classe",
-                "Une collection d'attributs partagés",
-                "Une spécification de méthodes que les classes implémentent"
-              ],
-              "answer": 3,
-              "explanation": "Une interface est un contrat : elle spécifie les méthodes que toute classe implémentante doit fournir. Elle définit le 'quoi', pas le 'comment'."
-            },
-            {
-              "prompt": "[EXAM 2024] Quel est l'objectif principal du pattern Singleton ?",
-              "choices": [
-                "Gérer une collection d'objets de manière efficace",
-                "Assurer qu'une classe a une seule instance et fournir un point d'accès global à cette instance",
-                "Définir une interface pour la création d'une famille d'objets liés",
-                "Encapsuler un algorithme spécifique dans une classe"
-              ],
-              "answer": 1,
-              "explanation": "Le Singleton garantit l'unicité de l'instance et expose un point d'accès global via getInstance(). Le constructeur privé bloque toute instanciation externe."
-            },
-            {
-              "prompt": "[EXAM 2024] La composition est un cas particulier d'agrégation — Vrai ou Faux ?",
-              "choices": [
-                "Vrai",
-                "Faux"
-              ],
-              "answer": 0,
-              "explanation": "Vrai. La composition EST une agrégation forte : la durée de vie du composant est liée à celle du composé. L'agrégation simple permet aux composants d'exister indépendamment du tout."
-            },
-            {
-              "prompt": "[EXAM 2024] Dans une association unidirectionnelle, l'information de liaison circule dans les deux sens — Vrai ou Faux ?",
-              "choices": [
-                "Vrai",
-                "Faux"
-              ],
-              "answer": 1,
-              "explanation": "Faux. Une association unidirectionnelle ne circule que dans un seul sens — seul un côté connaît l'autre. La bidirectionnalité est la valeur par défaut en UML (sans flèche), mais une flèche unique la restreint."
-            },
-            {
-              "prompt": "[EXAM 2024] Comment représente-t-on un attribut de classe (statique) dans un diagramme de classe UML ?",
-              "choices": [
-                "En mettant le symbole '-' avant son nom",
-                "En mettant le symbole '+' avant son nom",
-                "En le soulignant",
-                "En mettant le symbole '#' avant son nom"
-              ],
-              "answer": 2,
-              "explanation": "Un attribut statique (de classe) est souligné en UML. Cela le distingue des attributs d'instance, qui ont une valeur propre à chaque objet. Le symbole de visibilité (-, +, #) est séparé de la notion de staticité."
-            }
-          ]
+            "title": "BOSS: Examen Janvier 2024",
+            "isBoss": true,
+            "mobs": [
+                {
+                    "concept": "Examen Officiel — MOD 1 — Ghiles Ziat",
+                    "lore": "The gate boss. These are the actual January 2024 exam questions. No paraphrasing. No hints. No mercy.",
+                    "questions": [
+                        {
+                            "prompt": "[EXAM 2024] Lequel des concepts suivants est un avantage offert par l'héritage en programmation orientée objet ?",
+                            "choices": [
+                                "Un temps d'exécution plus rapide",
+                                "Une plus grande réutilisation du code",
+                                "Une consommation mémoire moins grande",
+                                "Une compilation plus rapide"
+                            ],
+                            "answer": 1,
+                            "explanation": "L'héritage favorise la réutilisation du code. Les classes dérivées héritent des attributs et méthodes sans réécriture. Les autres options sont des avantages qui ne découlent pas directement de l'héritage."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] Qu'est-ce que l'encapsulation avec masquage d'information ?",
+                            "choices": [
+                                "Le fait de cacher l'implémentation interne d'une classe et de fournir une interface publique",
+                                "L'utilisation de classes abstraites pour masquer le code",
+                                "La possibilité d'accéder à des méthodes privées depuis l'extérieur",
+                                "La création de nouvelles classes à partir de classes existantes"
+                            ],
+                            "answer": 0,
+                            "explanation": "L'encapsulation avec masquage cache l'implémentation interne et expose uniquement une interface publique. L'option D décrit l'héritage, pas l'encapsulation."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] Parmi les concepts suivants, lequel est une forme de polymorphisme en programmation orientée objet ?",
+                            "choices": [
+                                "La capacité d'une classe à hériter de plusieurs classes",
+                                "La capacité d'une classe à avoir plusieurs méthodes portant le même nom",
+                                "La capacité d'une classe à être instanciée",
+                                "La capacité d'une classe à avoir des attributs multiples"
+                            ],
+                            "answer": 1,
+                            "explanation": "La surcharge (overloading) — plusieurs méthodes avec le même nom mais des signatures différentes — est une forme de polymorphisme. L'option A décrit l'héritage multiple, pas le polymorphisme en lui-même."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] Quelle est la principale différence entre une classe abstraite et une interface en Java ?",
+                            "choices": [
+                                "Une classe abstraite peut avoir des méthodes concrètes, une interface ne peut avoir que des signatures de méthodes",
+                                "Une interface peut être instanciée, une classe abstraite ne peut pas",
+                                "Une classe abstraite ne peut pas avoir d'attributs",
+                                "Il n'y a pas de différence significative entre les deux"
+                            ],
+                            "answer": 0,
+                            "explanation": "La classe abstraite peut contenir des méthodes avec corps (concrètes) et des attributs. L'interface (conceptuellement) ne contient que des signatures — c'est un contrat pur."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] Quel concept de programmation orientée objet permet de regrouper les données et les méthodes qui agissent sur ces données dans une seule unité ?",
+                            "choices": [
+                                "Polymorphisme",
+                                "Encapsulation",
+                                "Héritage",
+                                "Abstraction"
+                            ],
+                            "answer": 1,
+                            "explanation": "L'encapsulation regroupe données (attributs) et comportements (méthodes) au sein d'une même entité — la classe — et contrôle l'accès via les modificateurs de visibilité."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] Que représente une interface ?",
+                            "choices": [
+                                "Une classe abstraite",
+                                "Une implémentation concrète d'une classe",
+                                "Une collection d'attributs partagés",
+                                "Une spécification de méthodes que les classes implémentent"
+                            ],
+                            "answer": 3,
+                            "explanation": "Une interface est un contrat : elle spécifie les méthodes que toute classe implémentante doit fournir. Elle définit le 'quoi', pas le 'comment'."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] Quel est l'objectif principal du pattern Singleton ?",
+                            "choices": [
+                                "Gérer une collection d'objets de manière efficace",
+                                "Assurer qu'une classe a une seule instance et fournir un point d'accès global à cette instance",
+                                "Définir une interface pour la création d'une famille d'objets liés",
+                                "Encapsuler un algorithme spécifique dans une classe"
+                            ],
+                            "answer": 1,
+                            "explanation": "Le Singleton garantit l'unicité de l'instance et expose un point d'accès global via getInstance(). Le constructeur privé bloque toute instanciation externe."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] La composition est un cas particulier d'agrégation — Vrai ou Faux ?",
+                            "choices": [
+                                "Vrai",
+                                "Faux"
+                            ],
+                            "answer": 0,
+                            "explanation": "Vrai. La composition EST une agrégation forte : la durée de vie du composant est liée à celle du composé. L'agrégation simple permet aux composants d'exister indépendamment du tout."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] Dans une association unidirectionnelle, l'information de liaison circule dans les deux sens — Vrai ou Faux ?",
+                            "choices": [
+                                "Vrai",
+                                "Faux"
+                            ],
+                            "answer": 1,
+                            "explanation": "Faux. Une association unidirectionnelle ne circule que dans un seul sens — seul un côté connaît l'autre. La bidirectionnalité est la valeur par défaut en UML (sans flèche), mais une flèche unique la restreint."
+                        },
+                        {
+                            "prompt": "[EXAM 2024] Comment représente-t-on un attribut de classe (statique) dans un diagramme de classe UML ?",
+                            "choices": [
+                                "En mettant le symbole '-' avant son nom",
+                                "En mettant le symbole '+' avant son nom",
+                                "En le soulignant",
+                                "En mettant le symbole '#' avant son nom"
+                            ],
+                            "answer": 2,
+                            "explanation": "Un attribut statique (de classe) est souligné en UML. Cela le distingue des attributs d'instance, qui ont une valeur propre à chaque objet. Le symbole de visibilité (-, +, #) est séparé de la notion de staticité."
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
