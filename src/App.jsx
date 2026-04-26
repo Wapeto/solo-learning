@@ -134,7 +134,6 @@ export default function App() {
           rankColors={ctx.RANK_COLORS}
           onSelectFloor={enterFloor}
           onBack={() => setScreen('PORTAL')}
-          onGiveUp={() => { ctx.giveUp(); setScreen('PORTAL') }}
         />
       )}
       {screen === 'COMBAT' && currentDungeon && (
@@ -142,6 +141,7 @@ export default function App() {
           dungeon={currentDungeon}
           floorIndex={currentFloorIndex}
           onComplete={handleFloorComplete}
+          onGiveUp={() => { ctx.giveUp(); setScreen('DUNGEON_MAP') }}
         />
       )}
       {(screen === 'FLOOR_RESULTS' || screen === 'DUNGEON_RESULTS') && lastResult && (

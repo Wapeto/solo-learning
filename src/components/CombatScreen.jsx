@@ -29,7 +29,7 @@ function flattenQuestions(floor) {
   )
 }
 
-export default function CombatScreen({ dungeon, floorIndex, onComplete }) {
+export default function CombatScreen({ dungeon, floorIndex, onComplete, onGiveUp }) {
   const floor = dungeon.floors[floorIndex]
   const [questions] = useState(() => shuffle(flattenQuestions(floor)).map(shuffleChoices))
 
@@ -205,6 +205,15 @@ export default function CombatScreen({ dungeon, floorIndex, onComplete }) {
           BOSS FLOOR
         </span>
       )}
+      <button
+        className="sys-btn sys-btn-sec"
+        style={{ color: 'var(--fail)', borderColor: 'rgba(255,68,85,0.3)', fontSize: '0.65rem', padding: '3px 10px', marginLeft: 'auto' }}
+        onClick={() => {
+          if (confirm('Give up this floor? You will lose 50 XP.')) onGiveUp()
+        }}
+      >
+        [ GIVE UP ]
+      </button>
     </div>
   )
 

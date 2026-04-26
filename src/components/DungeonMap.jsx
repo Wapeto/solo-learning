@@ -1,4 +1,4 @@
-export default function DungeonMap({ dungeon, hunter, rankColors, onSelectFloor, onBack, onGiveUp }) {
+export default function DungeonMap({ dungeon, hunter, rankColors, onSelectFloor, onBack }) {
   const completedFloors = hunter.completedFloors?.[dungeon.id] || []
   const dRankColor = rankColors[dungeon.rank] || '#888'
 
@@ -53,19 +53,7 @@ export default function DungeonMap({ dungeon, hunter, rankColors, onSelectFloor,
         })}
       </div>
 
-      <div style={{ textAlign: 'center', marginTop: 24 }}>
-        <button
-          className="sys-btn sys-btn-sec"
-          style={{ color: 'var(--fail)', borderColor: 'rgba(255,68,85,0.3)' }}
-          onClick={() => {
-            if (confirm('Abandon this dungeon? You will lose 50 XP.')) {
-              onGiveUp()
-            }
-          }}
-        >
-          [ GIVE UP ]
-        </button>
-      </div>
+
     </div>
   )
 }
