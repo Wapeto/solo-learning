@@ -737,3 +737,162 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/* ──────────────────────────────────────────────────────────────── */
+/*  CODE QUESTION                                                    */
+/* ──────────────────────────────────────────────────────────────── */
+.code-editor-container {
+  height: 280px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.code-editor-wrap {
+  padding: 0 32px;
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.code-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 32px;
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.code-attempts {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-left: auto;
+}
+
+.code-results-panel {
+  padding: 0 32px 24px;
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.code-results-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 0 8px;
+}
+
+.code-result-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  background: rgba(10,10,28,0.5);
+  flex-wrap: wrap;
+}
+
+.code-result-pass { border-color: rgba(0,255,170,0.25); background: rgba(0,255,170,0.04); }
+.code-result-fail { border-color: rgba(255,68,85,0.25);  background: rgba(255,68,85,0.04); }
+
+.code-result-icon { min-width: 14px; flex-shrink: 0; }
+.code-result-pass .code-result-icon { color: var(--success); }
+.code-result-fail .code-result-icon { color: var(--fail); }
+
+.code-result-desc     { color: var(--text-dim); flex: 1; min-width: 80px; }
+.code-result-got      { color: var(--text); }
+.code-result-expected { color: var(--fail); width: 100%; padding-left: 24px; }
+
+.code-result-error {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--fail);
+  padding: 8px 10px;
+  border: 1px solid rgba(255,68,85,0.3);
+  background: rgba(255,68,85,0.07);
+}
+
+/* ──────────────────────────────────────────────────────────────── */
+/*  RESPONSIVE — 768px (tablet)                                     */
+/* ──────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Portal */
+  .hunter-card {
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  .hunter-rank { font-size: 2rem; min-width: 40px; }
+  .portal-topbar { flex-direction: column; }
+
+  /* Dungeon map */
+  .map-title { font-size: 1.8rem; }
+
+  /* System buttons */
+  .sys-btn { font-size: 0.78rem; }
+}
+
+/* ──────────────────────────────────────────────────────────────── */
+/*  RESPONSIVE — 480px (phone)                                      */
+/* ──────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Portal */
+  .portal-page { padding: 16px 16px 48px; }
+  .hunter-rank { font-size: 1.8rem; }
+  .dungeon-grid { grid-template-columns: minmax(280px, 1fr); }
+
+  /* Dungeon map */
+  .map-page { padding: 16px 16px 48px; }
+  .map-title { font-size: 1.6rem; }
+  .floor-item { padding: 14px 16px; gap: 12px; }
+  .floor-status { font-size: 0.65rem; }
+
+  /* Combat */
+  .question-panel { padding: 28px 20px 16px; }
+  .question-text  { font-size: 1.1rem; }
+  .choices-grid   { padding: 0 16px 20px; }
+  .choice-btn     { min-height: 56px; }
+  .explanation-panel { padding: 16px 20px; }
+
+  /* Results */
+  .results-panel { padding: 32px 24px; }
+  .results-grade { font-size: 4rem; }
+
+  /* Code question */
+  .code-editor-container { height: 200px; }
+  .code-editor-wrap   { padding: 0 16px; }
+  .code-actions       { padding: 10px 16px; flex-direction: column; align-items: stretch; }
+  .code-actions .sys-btn { text-align: center; }
+  .code-attempts      { margin-left: 0; }
+  .code-results-panel { padding: 0 16px 16px; }
+}
+
+/* ──────────────────────────────────────────────────────────────── */
+/*  RESPONSIVE — 600px (combat HUD + choices already handled)       */
+/* ──────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  /* Combat HUD: ensure HP bar doesn't overflow */
+  .combat-hud     { gap: 12px; padding: 10px 16px; row-gap: 8px; }
+  .hud-hp-wrap    { min-width: 0; flex: 1 1 100%; order: 3; }
+  .hud-floor      { order: 1; }
+  .hud-progress   { order: 2; margin-left: auto; }
+  .streak-badge   { order: 4; }
+
+  /* No horizontal overflow anywhere */
+  .page           { overflow-x: hidden; }
+
+  /* Min tap target */
+  .sys-btn, .back-btn, .choice-btn, button { min-height: 44px; }
+}
