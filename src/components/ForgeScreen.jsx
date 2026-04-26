@@ -169,16 +169,59 @@ export default function ForgeScreen({ userId, userDungeons, uploadDungeon, delet
         </div>
       </div>
 
-      {/* Section 2: JSON Paste */}
+      {/* Section 2: Drop Zone */}
       <div className="forge-section">
         <div className="sys-notification" style={{ marginBottom: 16 }}>
           <span className="sys-bracket">[System] </span>
-          PASTE DUNGEON JSON
+          UPLOAD DUNGEON JSON FILE
+        </div>
+
+        <div
+          className={`forge-dropzone${dragging ? ' forge-dropzone-active' : ''}`}
+          onDragOver={e => { e.preventDefault(); setDragging(true) }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={onDrop}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <span className="forge-drop-text">Drop your .json file here, or click to browse</span>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            style={{ display: 'none' }}
+            onChange={onFileChange}
+          />
+        </div>
+
+        {uploadStatus && (
+          <div className={`forge-upload-result forge-upload-result-${uploadStatus.type}`}>
+            <div>{uploadStatus.message}</div>
+            {uploadStatus.type === 'success' && uploadStatus.shareUrl && (
+              <div className="forge-share-row">
+                <span className="forge-share-url">{uploadStatus.shareUrl}</span>
+                <button
+                  className="sys-btn"
+                  style={{ fontSize: '0.7rem', padding: '4px 14px' }}
+                  onClick={() => copyShareUrl(uploadStatus.supabaseId, uploadStatus.shareUrl)}
+                >
+                  {shareCopied[uploadStatus.supabaseId] ? '[ COPIED ]' : '[ COPY LINK ]'}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Section 3: JSON Paste */}
+      <div className="forge-section">
+        <div className="sys-notification" style={{ marginBottom: 16 }}>
+          <span className="sys-bracket">[System] </span>
+          OR PASTE JSON DIRECTLY
         </div>
 
         <textarea
           className="forge-paste-area"
-          placeholder="Or paste your dungeon JSON here..."
+          placeholder="Paste your dungeon JSON here..."
           value={pasteText}
           onChange={e => setPasteText(e.target.value)}
         />
@@ -204,49 +247,6 @@ export default function ForgeScreen({ userId, userDungeons, uploadDungeon, delet
                   }}
                 >
                   {pasteCopied ? '[ COPIED ]' : '[ COPY LINK ]'}
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Section 3: Drop Zone */}
-      <div className="forge-section">
-        <div className="sys-notification" style={{ marginBottom: 16 }}>
-          <span className="sys-bracket">[System] </span>
-          UPLOAD DUNGEON
-        </div>
-
-        <div
-          className={`forge-dropzone${dragging ? ' forge-dropzone-active' : ''}`}
-          onDragOver={e => { e.preventDefault(); setDragging(true) }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={onDrop}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <span className="forge-drop-text">Drop your dungeon JSON here, or click to browse</span>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".json"
-            style={{ display: 'none' }}
-            onChange={onFileChange}
-          />
-        </div>
-
-        {uploadStatus && (
-          <div className={`forge-upload-result forge-upload-result-${uploadStatus.type}`}>
-            <div>{uploadStatus.message}</div>
-            {uploadStatus.type === 'success' && uploadStatus.shareUrl && (
-              <div className="forge-share-row">
-                <span className="forge-share-url">{uploadStatus.shareUrl}</span>
-                <button
-                  className="sys-btn"
-                  style={{ fontSize: '0.7rem', padding: '4px 14px' }}
-                  onClick={() => copyShareUrl(uploadStatus.supabaseId, uploadStatus.shareUrl)}
-                >
-                  {shareCopied[uploadStatus.supabaseId] ? '[ COPIED ]' : '[ COPY LINK ]'}
                 </button>
               </div>
             )}
