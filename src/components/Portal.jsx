@@ -106,6 +106,12 @@ export default function Portal({ dungeons, loading, hunter, xpProgress, xpToNext
           [ LOGOUT ]
         </button>
       </div>
+      <a
+        href="/privacy.html"
+        style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-dim)', textDecoration: 'none', marginTop: 'auto', alignSelf: 'center' }}
+      >
+        Privacy Policy
+      </a>
     </div>
   )
 }
