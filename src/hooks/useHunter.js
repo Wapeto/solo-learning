@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../supabase'
 
 export const RANKS = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS']
@@ -56,23 +56,27 @@ function fromRow(row) {
   }
 }
 
-async function upsert(h, userId) {
-  await supabase
+function upsert(h, userId) {
+  supabase
     .from('hunter_state')
     .upsert(toRow(h, userId), { onConflict: 'user_id' })
+    .catch(console.error)
 }
 
 export function useHunter(userId) {
   const [hunter, setHunter] = useState(DEFAULT_HUNTER)
+  const hasMutated = useRef(false)
 
   useEffect(() => {
     if (!userId) return
+    hasMutated.current = false
     supabase
       .from('hunter_state')
       .select('*')
       .eq('user_id', userId)
       .single()
       .then(({ data }) => {
+        if (hasMutated.current) return
         if (data) {
           setHunter(fromRow(data))
         } else {
@@ -82,6 +86,7 @@ export function useHunter(userId) {
   }, [userId])
 
   function gainXP(amount) {
+    hasMutated.current = true
     setHunter(h => {
       const newXP = h.xp + amount
       const { rank, rankIndex } = computeRank(newXP)
@@ -92,6 +97,7 @@ export function useHunter(userId) {
   }
 
   function recordAnswer(correct) {
+    hasMutated.current = true
     setHunter(h => {
       const next = {
         ...h,
@@ -104,6 +110,7 @@ export function useHunter(userId) {
   }
 
   function completeFloor(dungeonId, floorIndex) {
+    hasMutated.current = true
     setHunter(h => {
       const key = `${dungeonId}_${floorIndex}`
       const prev = h.completedFloors[dungeonId] || []
@@ -132,6 +139,7 @@ export function useHunter(userId) {
   }
 
   function completeDungeon(dungeonId) {
+    hasMutated.current = true
     setHunter(h => {
       if (h.completedDungeons.includes(dungeonId)) return h
       const next = {
@@ -158,6 +166,7 @@ export function useHunter(userId) {
   }
 
   function giveUp() {
+    hasMutated.current = true
     setHunter(h => {
       const newXP = Math.max(0, h.xp - 50)
       const { rank, rankIndex } = computeRank(newXP)
@@ -168,6 +177,7 @@ export function useHunter(userId) {
   }
 
   function reset() {
+    hasMutated.current = true
     setHunter(DEFAULT_HUNTER)
     if (userId) upsert(DEFAULT_HUNTER, userId)
   }
