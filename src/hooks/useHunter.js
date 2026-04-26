@@ -60,7 +60,7 @@ function upsert(h, userId) {
   supabase
     .from('hunter_state')
     .upsert(toRow(h, userId), { onConflict: 'user_id' })
-    .catch(console.error)
+    .then(({ error }) => { if (error) console.error(error) })
 }
 
 export function useHunter(userId) {
