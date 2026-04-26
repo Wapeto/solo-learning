@@ -15,6 +15,12 @@ export default function LoginScreen({ onSignIn }) {
         <button className="sys-btn" onClick={onSignIn}>
           [ LOGIN WITH GOOGLE ]
         </button>
+      <a
+        href="/privacy.html"
+        style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-dim)', textDecoration: 'none', marginTop: 'auto', alignSelf: 'center' }}
+      >
+        Privacy Policy
+      </a>
       </div>
     </div>
   )
