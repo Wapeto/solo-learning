@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function Portal({ dungeons, loading, hunter, xpProgress, xpToNext, rankColors, onSelect, onReset, onSignOut }) {
+export default function Portal({ dungeons, loading, hunter, xpProgress, xpToNext, rankColors, onSelect, onReset, onSignOut, onForge }) {
   const [notif, setNotif] = useState(false)
 
   useEffect(() => {
@@ -82,6 +82,7 @@ export default function Portal({ dungeons, loading, hunter, xpProgress, xpToNext
                   </div>
                 </div>
                 {cleared && <div className="dcard-badge">CLEARED</div>}
+                {d._isUserDungeon && <div className="dcard-badge dcard-badge-custom">CUSTOM</div>}
               </button>
             )
           })}
@@ -89,6 +90,13 @@ export default function Portal({ dungeons, loading, hunter, xpProgress, xpToNext
       </main>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: 'auto' }}>
+        <button
+          className="sys-btn sys-btn-sec"
+          style={{ fontSize: '0.65rem', padding: '6px 14px' }}
+          onClick={onForge}
+        >
+          [ FORGE ]
+        </button>
         {hunter.totalAnswered > 0 && (
           <button
             className="sys-btn sys-btn-sec"

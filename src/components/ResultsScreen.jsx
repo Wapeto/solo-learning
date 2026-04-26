@@ -14,7 +14,7 @@ export default function ResultsScreen({
   onNext, onMap, onPortal,
 }) {
   const [show, setShow] = useState(false)
-  const { correct, total, xpGained, hp } = result
+  const { correct, total, xpGained, hp, multiplier } = result
   const { grade, color, label } = getGrade(correct, total)
   const floor = dungeon?.floors?.[floorIndex]
 
@@ -60,6 +60,12 @@ export default function ResultsScreen({
             <span>XP Gained</span>
             <span style={{ color: '#ffd700' }}>+{xpGained} XP</span>
           </div>
+          {multiplier != null && multiplier < 1.0 && (
+            <div className="stat-row">
+              <span style={{ color: 'var(--text-dim)', fontSize: '0.72rem' }}>Replay penalty</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: '0.72rem' }}>×{multiplier}</span>
+            </div>
+          )}
           <div className="stat-row">
             <span>Hunter Rank</span>
             <span>{hunter.rank} ({hunter.xp} total XP)</span>

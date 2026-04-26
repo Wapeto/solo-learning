@@ -1,10 +1,27 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import CodeEditor from './CodeEditor'
+import RichPrompt from './RichPrompt'
 import workerCode from '../workers/runner.js?raw'
 
-const BASE_XP   = 60
-const STREAK_XP = 90
+const BASE_XP   = 40
+const STREAK_XP = 60
 const HP_LOSS   = 20
+
+function shuffle(arr) {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+function shuffleChoices(q) {
+  if (q.type === 'code' || !q.choices) return q
+  const pairs = q.choices.map((text, i) => ({ text, isCorrect: i === q.answer }))
+  const shuffled = shuffle(pairs)
+  return { ...q, choices: shuffled.map(p => p.text), answer: shuffled.findIndex(p => p.isCorrect) }
+}
 
 function flattenQuestions(floor) {
   return floor.mobs.flatMap(mob =>
@@ -12,18 +29,9 @@ function flattenQuestions(floor) {
   )
 }
 
-function getMobForIndex(floor, qi) {
-  let count = 0
-  for (const mob of floor.mobs) {
-    count += mob.questions.length
-    if (qi < count) return mob
-  }
-  return floor.mobs[0]
-}
-
 export default function CombatScreen({ dungeon, floorIndex, onComplete }) {
-  const floor     = dungeon.floors[floorIndex]
-  const questions = useMemo(() => flattenQuestions(floor), [floor])
+  const floor = dungeon.floors[floorIndex]
+  const [questions] = useState(() => shuffle(flattenQuestions(floor)).map(shuffleChoices))
 
   // Shared state
   const [qi,       setQi]       = useState(0)
@@ -48,10 +56,10 @@ export default function CombatScreen({ dungeon, floorIndex, onComplete }) {
   const workerRef     = useRef(null)
   const completionRef = useRef(null)
 
-  const q      = questions[qi]
-  const mob    = getMobForIndex(floor, qi)
-  const isBoss = !!floor.isBoss
-  const isCode = q?.type === 'code'
+  const q          = questions[qi]
+  const mobConcept = q?.mobConcept ?? ''
+  const isBoss     = !!floor.isBoss
+  const isCode     = q?.type === 'code'
 
   // Create/teardown worker when question changes
   useEffect(() => {
@@ -203,7 +211,7 @@ export default function CombatScreen({ dungeon, floorIndex, onComplete }) {
   const MobBanner = (
     <div className="mob-banner">
       <span className="mob-tag">[ MOB ]</span>
-      <span className="mob-name">{mob.concept}</span>
+      <span className="mob-name">{mobConcept}</span>
     </div>
   )
 
@@ -217,7 +225,7 @@ export default function CombatScreen({ dungeon, floorIndex, onComplete }) {
         {MobBanner}
 
         <div className="question-panel">
-          <p className="question-text">{q.prompt}</p>
+          <RichPrompt text={q.prompt} className="question-text" />
         </div>
 
         {codePhase !== 'DONE' && (
@@ -299,7 +307,7 @@ export default function CombatScreen({ dungeon, floorIndex, onComplete }) {
                 ))}
               </div>
             )}
-            <p className="exp-text">{q.explanation}</p>
+            <RichPrompt text={q.explanation} className="exp-text" />
             <div className="exp-actions">
               <button className="sys-btn" onClick={handleCodeContinue}>
                 {qi + 1 >= questions.length ? '[ FLOOR CLEAR ]' : '[ CONTINUE ]'}

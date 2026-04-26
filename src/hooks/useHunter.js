@@ -25,6 +25,7 @@ const DEFAULT_HUNTER = {
   totalAnswered: 0,
   completedFloors: {},
   completedDungeons: [],
+  floorClearCount: {},
 }
 
 function toRow(h, userId) {
@@ -37,6 +38,7 @@ function toRow(h, userId) {
     total_answered: h.totalAnswered,
     completed_floors: h.completedFloors,
     completed_dungeons: h.completedDungeons,
+    floor_clear_count: h.floorClearCount,
     updated_at: new Date().toISOString(),
   }
 }
@@ -50,6 +52,7 @@ function fromRow(row) {
     totalAnswered: row.total_answered,
     completedFloors: row.completed_floors ?? {},
     completedDungeons: row.completed_dungeons ?? [],
+    floorClearCount: row.floor_clear_count ?? {},
   }
 }
 
@@ -102,15 +105,30 @@ export function useHunter(userId) {
 
   function completeFloor(dungeonId, floorIndex) {
     setHunter(h => {
+      const key = `${dungeonId}_${floorIndex}`
       const prev = h.completedFloors[dungeonId] || []
-      if (prev.includes(floorIndex)) return h
       const next = {
         ...h,
-        completedFloors: { ...h.completedFloors, [dungeonId]: [...prev, floorIndex] },
+        completedFloors: prev.includes(floorIndex)
+          ? h.completedFloors
+          : { ...h.completedFloors, [dungeonId]: [...prev, floorIndex] },
+        floorClearCount: {
+          ...h.floorClearCount,
+          [key]: (h.floorClearCount[key] || 0) + 1,
+        },
       }
       if (userId) upsert(next, userId)
       return next
     })
+  }
+
+  function getReplayMultiplier(dungeonId, floorIndex) {
+    const key = `${dungeonId}_${floorIndex}`
+    const count = hunter.floorClearCount[key] || 0
+    if (count === 0) return 1.0
+    if (count === 1) return 0.5
+    if (count === 2) return 0.25
+    return 0.1
   }
 
   function completeDungeon(dungeonId) {
@@ -152,6 +170,7 @@ export function useHunter(userId) {
     completeDungeon,
     getXPProgress,
     getXPToNext,
+    getReplayMultiplier,
     reset,
     RANK_COLORS,
   }

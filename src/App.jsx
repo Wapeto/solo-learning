@@ -1,24 +1,35 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from './hooks/useAuth'
 import { useHunter } from './hooks/useHunter'
+import { useUserDungeons } from './hooks/useUserDungeons'
 import Portal from './components/Portal'
 import DungeonMap from './components/DungeonMap'
 import CombatScreen from './components/CombatScreen'
 import ResultsScreen from './components/ResultsScreen'
 import LoginScreen from './components/LoginScreen'
+import ForgeScreen from './components/ForgeScreen'
+import DungeonPreview from './components/DungeonPreview'
 
 const BASE = import.meta.env.BASE_URL
 
+function getPreviewId() {
+  const match = window.location.pathname.match(/^\/dungeon\/([0-9a-f-]{36})$/i)
+  return match ? match[1] : null
+}
+
 export default function App() {
   const { user, loading: authLoading, signInWithGoogle, signOut } = useAuth()
-  const [screen, setScreen] = useState('PORTAL')
+  const [screen, setScreen] = useState(() => (getPreviewId() ? 'DUNGEON_PREVIEW' : 'PORTAL'))
+  const [previewId] = useState(getPreviewId)
   const [dungeons, setDungeons] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentDungeon, setCurrentDungeon] = useState(null)
   const [currentFloorIndex, setCurrentFloorIndex] = useState(0)
   const [lastResult, setLastResult] = useState(null)
+  const [replayMultiplier, setReplayMultiplier] = useState(1.0)
 
   const ctx = useHunter(user?.id ?? null)
+  const { userDungeons, uploadDungeon, deleteDungeon, getShareUrl, importDungeon, fetchPublicDungeon } = useUserDungeons(user?.id ?? null)
 
   useEffect(() => {
     fetch(`${BASE}dungeons/index.json`)
@@ -28,6 +39,8 @@ export default function App() {
       .catch(() => { setDungeons([]); setLoading(false) })
   }, [])
 
+  const allDungeons = [...dungeons, ...userDungeons]
+
   function enterDungeon(dungeon) {
     setCurrentDungeon(dungeon)
     setCurrentFloorIndex(0)
@@ -36,14 +49,16 @@ export default function App() {
 
   function enterFloor(idx) {
     setCurrentFloorIndex(idx)
+    setReplayMultiplier(ctx.getReplayMultiplier(currentDungeon.id, idx))
     setScreen('COMBAT')
   }
 
   function handleFloorComplete(result) {
-    ctx.gainXP(result.xpGained)
+    const xpGained = Math.round(result.xpGained * replayMultiplier)
+    ctx.gainXP(xpGained)
     ctx.recordAnswer(result.correct > 0)
     ctx.completeFloor(currentDungeon.id, currentFloorIndex)
-    setLastResult(result)
+    setLastResult({ ...result, xpGained, multiplier: replayMultiplier })
 
     const isLast = currentFloorIndex >= currentDungeon.floors.length - 1
     if (isLast) {
@@ -55,7 +70,9 @@ export default function App() {
   }
 
   function goNextFloor() {
-    setCurrentFloorIndex(i => i + 1)
+    const nextIdx = currentFloorIndex + 1
+    setCurrentFloorIndex(nextIdx)
+    setReplayMultiplier(ctx.getReplayMultiplier(currentDungeon.id, nextIdx))
     setScreen('COMBAT')
   }
 
@@ -77,6 +94,19 @@ export default function App() {
     )
   }
 
+  if (screen === 'DUNGEON_PREVIEW') {
+    return (
+      <DungeonPreview
+        supabaseId={previewId}
+        user={user}
+        userDungeons={userDungeons}
+        onImport={importDungeon}
+        fetchPublicDungeon={fetchPublicDungeon}
+        onPortal={() => { window.history.pushState({}, '', '/'); setScreen('PORTAL') }}
+      />
+    )
+  }
+
   if (!user) {
     return <LoginScreen onSignIn={signInWithGoogle} />
   }
@@ -85,7 +115,7 @@ export default function App() {
     <>
       {screen === 'PORTAL' && (
         <Portal
-          dungeons={dungeons}
+          dungeons={allDungeons}
           loading={loading}
           hunter={ctx.hunter}
           xpProgress={ctx.getXPProgress()}
@@ -94,6 +124,7 @@ export default function App() {
           onSelect={enterDungeon}
           onReset={ctx.reset}
           onSignOut={signOut}
+          onForge={() => setScreen('FORGE')}
         />
       )}
       {screen === 'DUNGEON_MAP' && currentDungeon && (
@@ -122,6 +153,16 @@ export default function App() {
           onNext={goNextFloor}
           onMap={() => setScreen('DUNGEON_MAP')}
           onPortal={() => setScreen('PORTAL')}
+        />
+      )}
+      {screen === 'FORGE' && (
+        <ForgeScreen
+          userId={user?.id}
+          userDungeons={userDungeons}
+          uploadDungeon={uploadDungeon}
+          deleteDungeon={deleteDungeon}
+          getShareUrl={getShareUrl}
+          onBack={() => setScreen('PORTAL')}
         />
       )}
     </>
