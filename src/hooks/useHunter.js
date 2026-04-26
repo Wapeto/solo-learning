@@ -38,7 +38,6 @@ function toRow(h, userId) {
     total_answered: h.totalAnswered,
     completed_floors: h.completedFloors,
     completed_dungeons: h.completedDungeons,
-    floor_clear_count: h.floorClearCount,
     updated_at: new Date().toISOString(),
   }
 }
