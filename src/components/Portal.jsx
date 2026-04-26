@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function Portal({ dungeons, loading, hunter, xpProgress, xpToNext, rankColors, onSelect, onReset }) {
+export default function Portal({ dungeons, loading, hunter, xpProgress, xpToNext, rankColors, onSelect, onReset, onSignOut }) {
   const [notif, setNotif] = useState(false)
 
   useEffect(() => {
@@ -88,15 +88,24 @@ export default function Portal({ dungeons, loading, hunter, xpProgress, xpToNext
         </div>
       </main>
 
-      {hunter.totalAnswered > 0 && (
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: 'auto' }}>
+        {hunter.totalAnswered > 0 && (
+          <button
+            className="sys-btn sys-btn-sec"
+            style={{ fontSize: '0.65rem', padding: '6px 14px' }}
+            onClick={() => { if (confirm('Reset all progress?')) onReset() }}
+          >
+            [ RESET DATA ]
+          </button>
+        )}
         <button
           className="sys-btn sys-btn-sec"
-          style={{ alignSelf: 'flex-end', marginTop: 'auto', fontSize: '0.65rem', padding: '6px 14px' }}
-          onClick={() => { if (confirm('Reset all progress?')) onReset() }}
+          style={{ fontSize: '0.65rem', padding: '6px 14px' }}
+          onClick={onSignOut}
         >
-          [ RESET DATA ]
+          [ LOGOUT ]
         </button>
-      )}
+      </div>
     </div>
   )
 }

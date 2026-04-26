@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { supabase } from '../supabase'
 
 export const RANKS = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS']
 export const XP_THRESHOLDS = [0, 300, 800, 1800, 3500, 6000, 10000, 16000]
@@ -26,53 +27,102 @@ const DEFAULT_HUNTER = {
   completedDungeons: [],
 }
 
-export function useHunter() {
-  const [hunter, setHunter] = useState(() => {
-    try {
-      const saved = localStorage.getItem('sl_hunter')
-      if (saved) return JSON.parse(saved)
-    } catch {}
-    return DEFAULT_HUNTER
-  })
+function toRow(h, userId) {
+  return {
+    user_id: userId,
+    xp: h.xp,
+    rank: h.rank,
+    rank_index: h.rankIndex,
+    total_correct: h.totalCorrect,
+    total_answered: h.totalAnswered,
+    completed_floors: h.completedFloors,
+    completed_dungeons: h.completedDungeons,
+    updated_at: new Date().toISOString(),
+  }
+}
+
+function fromRow(row) {
+  return {
+    xp: row.xp,
+    rank: row.rank,
+    rankIndex: row.rank_index,
+    totalCorrect: row.total_correct,
+    totalAnswered: row.total_answered,
+    completedFloors: row.completed_floors ?? {},
+    completedDungeons: row.completed_dungeons ?? [],
+  }
+}
+
+async function upsert(h, userId) {
+  await supabase
+    .from('hunter_state')
+    .upsert(toRow(h, userId), { onConflict: 'user_id' })
+}
+
+export function useHunter(userId) {
+  const [hunter, setHunter] = useState(DEFAULT_HUNTER)
 
   useEffect(() => {
-    localStorage.setItem('sl_hunter', JSON.stringify(hunter))
-  }, [hunter])
+    if (!userId) return
+    supabase
+      .from('hunter_state')
+      .select('*')
+      .eq('user_id', userId)
+      .single()
+      .then(({ data }) => {
+        if (data) {
+          setHunter(fromRow(data))
+        } else {
+          upsert(DEFAULT_HUNTER, userId)
+        }
+      })
+  }, [userId])
 
   function gainXP(amount) {
     setHunter(h => {
       const newXP = h.xp + amount
       const { rank, rankIndex } = computeRank(newXP)
-      return { ...h, xp: newXP, rank, rankIndex }
+      const next = { ...h, xp: newXP, rank, rankIndex }
+      if (userId) upsert(next, userId)
+      return next
     })
   }
 
   function recordAnswer(correct) {
-    setHunter(h => ({
-      ...h,
-      totalCorrect: h.totalCorrect + (correct ? 1 : 0),
-      totalAnswered: h.totalAnswered + 1,
-    }))
+    setHunter(h => {
+      const next = {
+        ...h,
+        totalCorrect: h.totalCorrect + (correct ? 1 : 0),
+        totalAnswered: h.totalAnswered + 1,
+      }
+      if (userId) upsert(next, userId)
+      return next
+    })
   }
 
   function completeFloor(dungeonId, floorIndex) {
     setHunter(h => {
       const prev = h.completedFloors[dungeonId] || []
       if (prev.includes(floorIndex)) return h
-      return {
+      const next = {
         ...h,
         completedFloors: { ...h.completedFloors, [dungeonId]: [...prev, floorIndex] },
       }
+      if (userId) upsert(next, userId)
+      return next
     })
   }
 
   function completeDungeon(dungeonId) {
-    setHunter(h => ({
-      ...h,
-      completedDungeons: h.completedDungeons.includes(dungeonId)
-        ? h.completedDungeons
-        : [...h.completedDungeons, dungeonId],
-    }))
+    setHunter(h => {
+      if (h.completedDungeons.includes(dungeonId)) return h
+      const next = {
+        ...h,
+        completedDungeons: [...h.completedDungeons, dungeonId],
+      }
+      if (userId) upsert(next, userId)
+      return next
+    })
   }
 
   function getXPProgress() {
@@ -91,7 +141,7 @@ export function useHunter() {
 
   function reset() {
     setHunter(DEFAULT_HUNTER)
-    localStorage.removeItem('sl_hunter')
+    if (userId) upsert(DEFAULT_HUNTER, userId)
   }
 
   return {

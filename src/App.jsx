@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
+import { useAuth } from './hooks/useAuth'
 import { useHunter } from './hooks/useHunter'
 import Portal from './components/Portal'
 import DungeonMap from './components/DungeonMap'
 import CombatScreen from './components/CombatScreen'
 import ResultsScreen from './components/ResultsScreen'
+import LoginScreen from './components/LoginScreen'
 
 const BASE = import.meta.env.BASE_URL
 
 export default function App() {
+  const { user, loading: authLoading, signInWithGoogle, signOut } = useAuth()
   const [screen, setScreen] = useState('PORTAL')
   const [dungeons, setDungeons] = useState([])
   const [loading, setLoading] = useState(true)
@@ -15,7 +18,7 @@ export default function App() {
   const [currentFloorIndex, setCurrentFloorIndex] = useState(0)
   const [lastResult, setLastResult] = useState(null)
 
-  const ctx = useHunter()
+  const ctx = useHunter(user?.id ?? null)
 
   useEffect(() => {
     fetch(`${BASE}dungeons/index.json`)
@@ -56,6 +59,28 @@ export default function App() {
     setScreen('COMBAT')
   }
 
+  if (authLoading) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        background: '#05050e',
+        fontFamily: 'Rajdhani, sans-serif',
+        color: '#4466ff',
+        fontSize: '1rem',
+        letterSpacing: '0.2em',
+      }}>
+        [ SYSTEM INITIALIZING... ]
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <LoginScreen onSignIn={signInWithGoogle} />
+  }
+
   return (
     <>
       {screen === 'PORTAL' && (
@@ -68,6 +93,7 @@ export default function App() {
           rankColors={ctx.RANK_COLORS}
           onSelect={enterDungeon}
           onReset={ctx.reset}
+          onSignOut={signOut}
         />
       )}
       {screen === 'DUNGEON_MAP' && currentDungeon && (
