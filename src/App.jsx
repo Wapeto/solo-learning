@@ -134,6 +134,7 @@ export default function App() {
           rankColors={ctx.RANK_COLORS}
           onSelectFloor={enterFloor}
           onBack={() => setScreen('PORTAL')}
+          onGiveUp={() => { ctx.giveUp(); setScreen('PORTAL') }}
         />
       )}
       {screen === 'COMBAT' && currentDungeon && (

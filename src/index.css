@@ -1134,3 +1134,21 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
   gap: 12px;
   padding-top: 8px;
 }
+
+.forge-paste-area {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  background: rgba(5,5,14,0.9);
+  border: 1px solid var(--border);
+  padding: 16px;
+  min-height: 160px;
+  width: 100%;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.forge-paste-area:focus {
+  border-color: var(--glow);
+}

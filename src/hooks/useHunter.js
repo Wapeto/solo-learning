@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../supabase'
 
 export const RANKS = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS']
-export const XP_THRESHOLDS = [0, 300, 800, 1800, 3500, 6000, 10000, 16000]
+export const XP_THRESHOLDS = [0, 600, 1600, 3600, 7000, 12000, 20000, 32000]
 
 const RANK_COLORS = {
   E: '#666677', D: '#44aa44', C: '#4499ff',
@@ -157,6 +157,16 @@ export function useHunter(userId) {
     return XP_THRESHOLDS[rankIndex + 1] - xp
   }
 
+  function giveUp() {
+    setHunter(h => {
+      const newXP = Math.max(0, h.xp - 50)
+      const { rank, rankIndex } = computeRank(newXP)
+      const next = { ...h, xp: newXP, rank, rankIndex }
+      if (userId) upsert(next, userId)
+      return next
+    })
+  }
+
   function reset() {
     setHunter(DEFAULT_HUNTER)
     if (userId) upsert(DEFAULT_HUNTER, userId)
@@ -171,6 +181,7 @@ export function useHunter(userId) {
     getXPProgress,
     getXPToNext,
     getReplayMultiplier,
+    giveUp,
     reset,
     RANK_COLORS,
   }

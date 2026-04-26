@@ -47,11 +47,26 @@ Rules:
 Here is the course material:
 [PASTE YOUR COURSE MATERIAL HERE]`
 
+function sanitizeDungeonText(raw) {
+  return raw
+    .replace(/^```[a-z]*\n?/gm, '')
+    .replace(/^```$/gm, '')
+    .replace(/\[cite[^\]]*\]/g, '')
+    .replace(/\[cite_start\]/g, '')
+    .replace(/\[\^?\d+\]/g, '')
+    .replace(/\/\/.*$/gm, '')
+    .replace(/,(\s*[}\]])/g, '$1')
+    .trim()
+}
+
 export default function ForgeScreen({ userId, userDungeons, uploadDungeon, deleteDungeon, getShareUrl, onBack }) {
   const [copyLabel, setCopyLabel] = useState('[ COPY PROMPT ]')
   const [uploadStatus, setUploadStatus] = useState(null) // { type: 'success'|'error', message, shareUrl?, supabaseId? }
   const [shareCopied, setShareCopied] = useState({})
   const [dragging, setDragging] = useState(false)
+  const [pasteText, setPasteText] = useState('')
+  const [pasteStatus, setPasteStatus] = useState(null) // { type: 'success'|'error', message, shareUrl?, supabaseId? }
+  const [pasteCopied, setPasteCopied] = useState(false)
   const fileInputRef = useRef(null)
 
   function handleCopyPrompt() {
@@ -92,6 +107,30 @@ export default function ForgeScreen({ userId, userDungeons, uploadDungeon, delet
     e.target.value = ''
   }
 
+  async function handlePasteUpload() {
+    setPasteStatus(null)
+    const sanitized = sanitizeDungeonText(pasteText)
+    let json
+    try {
+      json = JSON.parse(sanitized)
+    } catch (err) {
+      setPasteStatus({ type: 'error', message: `[ INVALID JSON ] — check for syntax errors and try again` })
+      return
+    }
+    try {
+      const id = await uploadDungeon(json)
+      setPasteStatus({
+        type: 'success',
+        message: `[ DUNGEON GATE OPENED — ${json.title} ]`,
+        shareUrl: getShareUrl(id),
+        supabaseId: id,
+      })
+      setPasteText('')
+    } catch (err) {
+      setPasteStatus({ type: 'error', message: err.message })
+    }
+  }
+
   function copyShareUrl(supabaseId, url) {
     navigator.clipboard.writeText(url).then(() => {
       setShareCopied(prev => ({ ...prev, [supabaseId]: true }))
@@ -130,7 +169,49 @@ export default function ForgeScreen({ userId, userDungeons, uploadDungeon, delet
         </div>
       </div>
 
-      {/* Section 2: Drop Zone */}
+      {/* Section 2: JSON Paste */}
+      <div className="forge-section">
+        <div className="sys-notification" style={{ marginBottom: 16 }}>
+          <span className="sys-bracket">[System] </span>
+          PASTE DUNGEON JSON
+        </div>
+
+        <textarea
+          className="forge-paste-area"
+          placeholder="Or paste your dungeon JSON here..."
+          value={pasteText}
+          onChange={e => setPasteText(e.target.value)}
+        />
+
+        <div className="forge-copy-row" style={{ marginTop: 12 }}>
+          <button className="sys-btn" onClick={handlePasteUpload}>[ PARSE &amp; UPLOAD ]</button>
+        </div>
+
+        {pasteStatus && (
+          <div className={`forge-upload-result forge-upload-result-${pasteStatus.type}`}>
+            <div>{pasteStatus.message}</div>
+            {pasteStatus.type === 'success' && pasteStatus.shareUrl && (
+              <div className="forge-share-row">
+                <span className="forge-share-url">{pasteStatus.shareUrl}</span>
+                <button
+                  className="sys-btn"
+                  style={{ fontSize: '0.7rem', padding: '4px 14px' }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(pasteStatus.shareUrl).then(() => {
+                      setPasteCopied(true)
+                      setTimeout(() => setPasteCopied(false), 2000)
+                    })
+                  }}
+                >
+                  {pasteCopied ? '[ COPIED ]' : '[ COPY LINK ]'}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Section 3: Drop Zone */}
       <div className="forge-section">
         <div className="sys-notification" style={{ marginBottom: 16 }}>
           <span className="sys-bracket">[System] </span>
@@ -173,7 +254,7 @@ export default function ForgeScreen({ userId, userDungeons, uploadDungeon, delet
         )}
       </div>
 
-      {/* Section 3: My Dungeons */}
+      {/* Section 4: My Dungeons */}
       <div className="forge-section">
         <div className="sys-notification" style={{ marginBottom: 16 }}>
           <span className="sys-bracket">[System] </span>
